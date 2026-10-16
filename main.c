@@ -141,7 +141,7 @@ void drawLinesCleared(const int linesCleared, const Offset off, const int scale)
     drawTextCoord(buf, atPos(12, 19, off, scale));
 }
 
-void boardDraw(PieceType *board, const Offset off, const int scale)
+void drawBoard(PieceType *board, const Offset off, const int scale)
 {
     for(int y = 0; y < 20; y++){
         for(int x = 0; x < 10; x++){
@@ -348,7 +348,7 @@ void loose(GameState *state, const Offset lastOff, int lastScale, const uint las
     drawBorders(lastOff, lastScale);
     drawBoardLines(lastOff, lastScale);
     drawPiece(state->piece, state->piecePos, lastOff, lastScale);
-    boardDraw(state->board, lastOff, lastScale);
+    drawBoard(state->board, lastOff, lastScale);
     drawNext(state->nextPieceType, lastOff, lastScale);
 
     char *overStr = "Game Over!";
@@ -374,7 +374,7 @@ void loose(GameState *state, const Offset lastOff, int lastScale, const uint las
         drawBorders(off, scale);
         drawBoardLines(off, scale);
         drawPiece(state->piece, state->piecePos, off, scale);
-        boardDraw(state->board, off, scale);
+        drawBoard(state->board, off, scale);
         drawNext(state->nextPieceType, off, scale);
         drawHoldPiece(state->holdPiece, off, scale);
         drawLinesCleared(state->linesCleared, off, scale);
@@ -492,7 +492,7 @@ int main(void)
         drawBorders(off, scale);
         drawBoardLines(off, scale);
         drawPiece(state.piece, state.piecePos, off, scale);
-        boardDraw(state.board, off, scale);
+        drawBoard(state.board, off, scale);
         drawNext(state.nextPieceType, off, scale);
         drawHoldPiece(state.holdPiece, off, scale);
         drawLinesCleared(state.linesCleared, off, scale);
