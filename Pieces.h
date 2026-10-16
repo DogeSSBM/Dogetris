@@ -1,10 +1,6 @@
 #ifndef PIECES_H
 #define PIECES_H
 
-#define PIECE_NUM   7
-
-typedef enum{PIECE_I, PIECE_J, PIECE_L, PIECE_O, PIECE_S, PIECE_T, PIECE_Z, PIECE_EMPTY}PieceType;
-
 Color pieceColor1[PIECE_NUM] = {
     {.r=  0,.g=240,.b=240,.a=255},
     {.r=  0,.g=  0,.b=240,.a=255},
@@ -24,12 +20,6 @@ Color pieceColor2[PIECE_NUM] = {
     {.r= 79,.g=  0,.b=121,.a=255},
     {.r=121,.g=  0,.b=  0,.a=255}
 };
-
-typedef struct{
-    PieceType type;
-    int rotation;
-    u16 minos;
-}Piece;
 
 bool minoPos(const u16 minos, const int x, const int y)
 {
@@ -68,5 +58,100 @@ Piece getPiece(const PieceType type, const int rotation)
     panic("unreachable");
     return (Piece){0};
 }
+
+bool pieceVisible(const u16 minos, const Coord pos)
+{
+    for(int y = 0; y < 4; y++){
+        for(int x = 0; x < 4; x++){
+            if(minoPos(minos, x, y) && pos.y+y >= 0)
+                return true;
+        }
+    }
+    return false;
+}
+
+int rotateOff(PieceType *board, const u16 minos, Coord *pos, const Offset off[5])
+{
+    for(int i = 0; i < 5; i++){
+        const Coord kickPos = coordAdd(*pos, off[i]);
+        if(minosFit(board, minos, kickPos)){
+            *pos = kickPos;
+            return i;
+        }
+    }
+    return -1;
+}
+
+bool rotate(PieceType *board, Piece *piece, Coord *pos, const int rotation)
+{
+    assertExpr(piece && pos && (rotation == -1 || rotation == 1));
+    const int nextRotation = wrap(piece->rotation + rotation, 0, 4);
+    if(piece->type == PIECE_O){
+        piece->rotation = nextRotation;
+        return true;
+    }
+    const Piece nextPiece = getPiece(piece->type, nextRotation);
+    int kickIndex = -1;
+    if(piece->type == PIECE_I){
+        if      (piece->rotation == 0 && rotation == -1){
+            const Offset off[5] = {{.x= 0,.y= 0},{.x=-1,.y= 0},{.x= 2,.y= 0},{.x=-1,.y= 2},{.x= 2,.y=-1}};
+            kickIndex = rotateOff(board, nextPiece.minos, pos, off);
+        }else if(piece->rotation == 0 && rotation ==  1){
+            const Offset off[5] = {{.x= 0,.y= 0},{.x=-2,.y= 0},{.x= 1,.y= 0},{.x=-2,.y=-1},{.x= 1,.y= 2}};
+            kickIndex = rotateOff(board, nextPiece.minos, pos, off);
+        }else if(piece->rotation == 1 && rotation == -1){
+            const Offset off[5] = {{.x= 0,.y= 0},{.x= 2,.y= 0},{.x=-1,.y= 0},{.x= 2,.y= 1},{.x=-1,.y=-2}};
+            kickIndex = rotateOff(board, nextPiece.minos, pos, off);
+        }else if(piece->rotation == 1 && rotation ==  1){
+            const Offset off[5] = {{.x= 0,.y= 0},{.x=-1,.y= 0},{.x= 2,.y= 0},{.x=-1,.y= 2},{.x= 2,.y=-1}};
+            kickIndex = rotateOff(board, nextPiece.minos, pos, off);
+        }else if(piece->rotation == 2 && rotation == -1){
+            const Offset off[5] = {{.x= 0,.y= 0},{.x= 1,.y= 0},{.x=-2,.y= 0},{.x= 1,.y=-2},{.x=-2,.y= 1}};
+            kickIndex = rotateOff(board, nextPiece.minos, pos, off);
+        }else if(piece->rotation == 2 && rotation ==  1){
+            const Offset off[5] = {{.x= 0,.y= 0},{.x= 2,.y= 0},{.x=-1,.y= 0},{.x= 2,.y= 1},{.x=-1,.y=-2}};
+            kickIndex = rotateOff(board, nextPiece.minos, pos, off);
+        }else if(piece->rotation == 3 && rotation == -1){
+            const Offset off[5] = {{.x= 0,.y= 0},{.x=-2,.y= 0},{.x= 1,.y= 0},{.x=-2,.y=-1},{.x= 1,.y= 2}};
+            kickIndex = rotateOff(board, nextPiece.minos, pos, off);
+        }else if(piece->rotation == 3 && rotation ==  1){
+            const Offset off[5] = {{.x= 0,.y= 0},{.x= 1,.y= 0},{.x=-2,.y= 0},{.x= 1,.y=-2},{.x=-2,.y= 1}};
+            kickIndex = rotateOff(board, nextPiece.minos, pos, off);
+        }
+    }else{
+        if      (piece->rotation == 0 && rotation == -1){
+            const Offset off[5] = {{.x= 0,.y= 0},{.x= 1,.y= 0},{.x= 1,.y= 1},{.x= 0,.y=-2},{.x= 1,.y=-2}};
+            kickIndex = rotateOff(board, nextPiece.minos, pos, off);
+        }else if(piece->rotation == 0 && rotation ==  1){
+            const Offset off[5] = {{.x= 0,.y= 0},{.x=-1,.y= 0},{.x=-1,.y= 1},{.x= 0,.y=-2},{.x=-1,.y=-2}};
+            kickIndex = rotateOff(board, nextPiece.minos, pos, off);
+        }else if(piece->rotation == 1 && rotation == -1){
+            const Offset off[5] = {{.x= 0,.y= 0},{.x= 1,.y= 0},{.x= 1,.y=-1},{.x= 0,.y= 2},{.x= 1,.y= 2}};
+            kickIndex = rotateOff(board, nextPiece.minos, pos, off);
+        }else if(piece->rotation == 1 && rotation ==  1){
+            const Offset off[5] = {{.x= 0,.y= 0},{.x= 1,.y= 0},{.x= 1,.y=-1},{.x= 0,.y= 2},{.x= 1,.y= 2}};
+            kickIndex = rotateOff(board, nextPiece.minos, pos, off);
+        }else if(piece->rotation == 2 && rotation == -1){
+            const Offset off[5] = {{.x= 0,.y= 0},{.x=-1,.y= 0},{.x=-1,.y= 1},{.x= 0,.y=-2},{.x=-1,.y=-2}};
+            kickIndex = rotateOff(board, nextPiece.minos, pos, off);
+        }else if(piece->rotation == 2 && rotation ==  1){
+            const Offset off[5] = {{.x= 0,.y= 0},{.x= 1,.y= 0},{.x= 1,.y= 1},{.x= 0,.y=-2},{.x= 1,.y=-2}};
+            kickIndex = rotateOff(board, nextPiece.minos, pos, off);
+        }else if(piece->rotation == 3 && rotation == -1){
+            const Offset off[5] = {{.x= 0,.y= 0},{.x=-1,.y= 0},{.x=-1,.y=-1},{.x= 0,.y= 2},{.x= 1,.y= 2}};
+            kickIndex = rotateOff(board, nextPiece.minos, pos, off);
+        }else if(piece->rotation == 3 && rotation ==  1){
+            const Offset off[5] = {{.x= 0,.y= 0},{.x=-1,.y= 0},{.x=-1,.y=-1},{.x= 0,.y= 2},{.x=-1,.y= 2}};
+            kickIndex = rotateOff(board, nextPiece.minos, pos, off);
+        }
+    }
+    if(kickIndex >= 0){
+        *piece = nextPiece;
+        return true;
+    }
+
+    return false;
+}
+
 
 #endif
