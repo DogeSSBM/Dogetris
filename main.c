@@ -426,7 +426,6 @@ int main(void)
     init();
     windowInit();
     setTextColor(GREY);
-    // GameState state = {.board = malloc(sizeof(PieceType*) * 10 * 20)};
     GameState state = {.board = globalBoard};
     resetState(&state);
 
@@ -485,10 +484,6 @@ int main(void)
             const Coord newPiecePos = coordAdd(state.piecePos, move);
             if(minosFit(state.board, state.piece.minos, newPiecePos))
                 state.piecePos = newPiecePos;
-            // else if(move.y > 0 && state.piecePos.y == -2){
-            //     loose(&state, off, scale, frameTime);
-            //     continue;
-            // }
         }
 
         if(keyPressed(SC_P))
