@@ -106,7 +106,7 @@ void drawBorders(const Offset off, const int scale)
     }
 }
 
-void pieceDraw(const Piece piece, const Coord pos, const Offset off, const int scale)
+void drawPiece(const Piece piece, const Coord pos, const Offset off, const int scale)
 {
     for(int y = 0; y < 4; y++){
         for(int x = 0; x < 4; x++){
@@ -120,7 +120,7 @@ void drawNext(const PieceType piece, const Offset off, const int scale)
 {
     setTextSize(scale);
     drawTextCoord("Next", atPos(12, 0, off, scale));
-    pieceDraw(getPiece(piece, 0), (const Coord){.x=12, .y=1}, off, scale);
+    drawPiece(getPiece(piece, 0), (const Coord){.x=12, .y=1}, off, scale);
 }
 
 void drawHoldPiece(const PieceType piece, const Offset off, const int scale)
@@ -128,7 +128,7 @@ void drawHoldPiece(const PieceType piece, const Offset off, const int scale)
     setTextSize(scale);
     drawTextCoord("Hold", atPos(12, 4, off, scale));
     if(piece != PIECE_EMPTY)
-        pieceDraw(getPiece(piece, 0), (const Coord){.x=12, .y=5}, off, scale);
+        drawPiece(getPiece(piece, 0), (const Coord){.x=12, .y=5}, off, scale);
 }
 
 void drawLinesCleared(const int linesCleared, const Offset off, const int scale)
@@ -347,7 +347,7 @@ void loose(GameState *state, const Offset lastOff, int lastScale, const uint las
 {
     drawBorders(lastOff, lastScale);
     drawBoardLines(lastOff, lastScale);
-    pieceDraw(state->piece, state->piecePos, lastOff, lastScale);
+    drawPiece(state->piece, state->piecePos, lastOff, lastScale);
     boardDraw(state->board, lastOff, lastScale);
     drawNext(state->nextPieceType, lastOff, lastScale);
 
@@ -373,7 +373,7 @@ void loose(GameState *state, const Offset lastOff, int lastScale, const uint las
 
         drawBorders(off, scale);
         drawBoardLines(off, scale);
-        pieceDraw(state->piece, state->piecePos, off, scale);
+        drawPiece(state->piece, state->piecePos, off, scale);
         boardDraw(state->board, off, scale);
         drawNext(state->nextPieceType, off, scale);
         drawHoldPiece(state->holdPiece, off, scale);
@@ -491,7 +491,7 @@ int main(void)
 
         drawBorders(off, scale);
         drawBoardLines(off, scale);
-        pieceDraw(state.piece, state.piecePos, off, scale);
+        drawPiece(state.piece, state.piecePos, off, scale);
         boardDraw(state.board, off, scale);
         drawNext(state.nextPieceType, off, scale);
         drawHoldPiece(state.holdPiece, off, scale);
