@@ -91,7 +91,7 @@ int main(void)
         }
 
         if(keyPressed(SC_SPACE)){
-            state.piecePos = softDrop(state.board, state.piece.minos, state.piecePos);
+            state.piecePos = sonicDrop(state.board, state.piece.minos, state.piecePos);
             state.lastMoveDown = frameTime;
         }
 

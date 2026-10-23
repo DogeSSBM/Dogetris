@@ -74,6 +74,16 @@ void drawLinesCleared(const uint linesCleared, const Offset off, const int scale
     drawTextCoord(buf, bposwCoord(12, 19, off, scale));
 }
 
+// draws score
+void drawScore(const uint score, const Offset off, const int scale)
+{
+    setTextSize(scale);
+    drawTextCoord("Score", bposwCoord(12, 14, off, scale));
+    char buf[32] = {0};
+    sprintf(buf, "%u", score);
+    drawTextCoord(buf, bposwCoord(12, 15, off, scale));
+}
+
 // draws all minos on board
 void drawBoard(PieceType *board, const Offset off, const int scale)
 {
@@ -96,6 +106,7 @@ void drawAll(GameState *state, const Offset off, const int scale)
     drawNext(state->nextPieceType, off, scale);
     drawHoldPiece(state->holdPiece, off, scale);
     drawLinesCleared(state->linesCleared, off, scale);
+    drawScore(state->score, off, scale);
 }
 
 // draws xStr and constStr and progress bar for key heldTime. used for pause and loose

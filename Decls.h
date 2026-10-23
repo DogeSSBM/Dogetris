@@ -43,7 +43,7 @@ int clearLines(PieceType *board);
 // returns true if all minos of piece fit when moved down one
 bool canMoveDown(PieceType *board, const u16 minos, Coord pos);
 // returns lowest possible pos where piece will fit. returns pos if minos already dont fit
-Coord softDrop(PieceType *board, const u16 minos, Coord pos);
+Coord sonicDrop(PieceType *board, const u16 minos, Coord pos);
 // returns true if piece should be placed based on when it was last moved down, down key state, and if piece can move down
 bool shouldPlacePiece(PieceType *board, const u16 minos, const Coord pos, const uint frameTime, const uint lastMoveDown);
 
@@ -66,6 +66,8 @@ void drawNext(const PieceType piece, const Offset off, const int scale);
 void drawHoldPiece(const PieceType piece, const Offset off, const int scale);
 // draws lines cleared
 void drawLinesCleared(const uint linesCleared, const Offset off, const int scale);
+// draws score
+void drawScore(const uint score, const Offset off, const int scale);
 // draws all minos on board
 void drawBoard(PieceType *board, const Offset off, const int scale);
 // draws everything

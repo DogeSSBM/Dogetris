@@ -91,7 +91,7 @@ bool canMoveDown(PieceType *board, const u16 minos, Coord pos)
 }
 
 // returns lowest possible pos where piece will fit. returns pos if minos already dont fit
-Coord softDrop(PieceType *board, const u16 minos, Coord pos)
+Coord sonicDrop(PieceType *board, const u16 minos, Coord pos)
 {
     if(!minosFit(board, minos, pos))
         return pos;
