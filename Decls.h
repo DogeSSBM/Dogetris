@@ -32,7 +32,7 @@ bool rotate(PieceType *board, Piece *piece, Coord *pos, const int rotation);
 void printBoard(PieceType *board);
 // places all valid minos of a piece on the board
 void boardPlacePiece(PieceType *board, const Piece piece, const Coord pos);
-// returns true if all minos of a piece fit on the board at pos. doesnt check minos above visible board
+// returns true if all minos of a piece are in bounds and fit on the board at pos. doesnt check minos above visible board
 bool minosFit(PieceType *board, const u16 minos, const Coord pos);
 // shifts all lines above stopLine down one. fills top row with PIECE_EMPTY
 void shiftLinesDown(PieceType *board, const int stopLine);

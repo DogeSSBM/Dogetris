@@ -124,8 +124,18 @@ int main(void)
             state.nextPieceType = rand()%PIECE_NUM;
             state.lastMoveDown = frameTime;
             const int lines = clearLines(state.board);
-            if(lines)
-                printf("%i lines cleared\n", lines);
+            if(lines){
+                int scoreAdded = 0;
+                switch(lines){
+                    case 1: scoreAdded = 100; break;
+                    case 2: scoreAdded = 300; break;
+                    case 3: scoreAdded = 500; break;
+                    case 4: scoreAdded = 800; break;
+                    default: panic("unreachable"); break;
+                }
+                printf("%i lines cleared. +%i score\n", lines, scoreAdded);
+                state.score += scoreAdded;
+            }
             state.linesCleared += lines;
             state.holdAvailable = true;
         }else{

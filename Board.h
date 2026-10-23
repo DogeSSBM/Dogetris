@@ -30,16 +30,16 @@ void boardPlacePiece(PieceType *board, const Piece piece, const Coord pos)
     }
 }
 
-// returns true if all minos of a piece fit on the board at pos. doesnt check minos above visible board
+// returns true if all minos of a piece are in bounds and fit on the board at pos. doesnt check minos above visible board
 bool minosFit(PieceType *board, const u16 minos, const Coord pos)
 {
     for(int y = 0; y < 4; y++){
         for(int x = 0; x < 4; x++){
-            if(pos.y+y < 0)
-                continue;
             if(minoPos(minos, x, y)){
                 if(pos.x+x >= 10 || pos.y + y >= 20 || pos.x+x < 0)
-                    return false;
+                return false;
+                if(pos.y+y < 0)
+                    continue;
                 if(board[(pos.y+y)*20+(pos.x+x)] != PIECE_EMPTY)
                     return false;
             }
