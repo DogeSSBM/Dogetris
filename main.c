@@ -131,7 +131,7 @@ int main(void)
         }else{
             Offset move = dirKeyPressedOffset();
             move.y = move.y < 0 ? 0 : move.y;
-            if(frameTime - state.lastMoveDown > state.fallTime){
+            if(shouldSoftDrop(frameTime, state.lastMoveDown) || frameTime - state.lastMoveDown > state.fallTime){
                 move.y = 1;
                 state.lastMoveDown = frameTime;
             }

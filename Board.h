@@ -100,14 +100,20 @@ Coord sonicDrop(PieceType *board, const u16 minos, Coord pos)
     return pos;
 }
 
-// returns true if piece should be placed based on when it was last moved down, down key state, and if piece can move down
+// returns true if piece should be placed based on when it was last moved down, down key state, soft drop state, and if piece can move down
 bool shouldPlacePiece(PieceType *board, const u16 minos, const Coord pos, const uint frameTime, const uint lastMoveDown)
 {
     if(!canMoveDown(board, minos, pos)){
-        if(dirKeyPressedOffset().y > 0 || frameTime - lastMoveDown > 1000)
+        if(dirKeyPressedOffset().y > 0 || shouldSoftDrop(frameTime, lastMoveDown) || frameTime - lastMoveDown > 1000)
             return true;
     }
     return false;
 }
 
+// returns true if piece should move down for a soft drop
+bool shouldSoftDrop(const uint frameTime, const uint lastMoveDown)
+{
+    const uint downHeldTime = imax(keyHeldTime(SC_S), keyHeldTime(SC_DOWN));
+    return downHeldTime > 500 && (frameTime - lastMoveDown > 50);
+}
 #endif

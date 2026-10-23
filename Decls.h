@@ -46,6 +46,8 @@ bool canMoveDown(PieceType *board, const u16 minos, Coord pos);
 Coord sonicDrop(PieceType *board, const u16 minos, Coord pos);
 // returns true if piece should be placed based on when it was last moved down, down key state, and if piece can move down
 bool shouldPlacePiece(PieceType *board, const u16 minos, const Coord pos, const uint frameTime, const uint lastMoveDown);
+// returns true if piece should move down for a soft drop
+bool shouldSoftDrop(const uint frameTime, const uint lastMoveDown);
 
 // State.h --------------------------------------------------------------------
 // resets state to starting game state
