@@ -1,6 +1,7 @@
 #ifndef DRAW_H
 #define DRAW_H
 
+// draws board grid lines
 void drawBoardLines(const Offset off, const int scale)
 {
     setColor(DARKGREY);
@@ -11,6 +12,7 @@ void drawBoardLines(const Offset off, const int scale)
     }
 }
 
+// draws mino at board x y pos
 void drawMinoPos(const int x, const int y, const Offset off, const int scale, const Color color1, const Color color2)
 {
     const Coord boardPos = bposwCoord(x, y, off, scale);
@@ -20,6 +22,7 @@ void drawMinoPos(const int x, const int y, const Offset off, const int scale, co
     fillSquareCoordResize(boardPos, scale, -imax(scale/24, 1));
 }
 
+// draws grey squares surrounding board
 void drawBorders(const Offset off, const int scale)
 {
     for(int y = 0; y < YLEN-1; y++){
@@ -32,6 +35,7 @@ void drawBorders(const Offset off, const int scale)
     }
 }
 
+// draws piece at board pos
 void drawPiece(const Piece piece, const Coord pos, const Offset off, const int scale)
 {
     for(int y = 0; y < 4; y++){
@@ -42,6 +46,7 @@ void drawPiece(const Piece piece, const Coord pos, const Offset off, const int s
     }
 }
 
+// draws next piece
 void drawNext(const PieceType piece, const Offset off, const int scale)
 {
     setTextSize(scale);
@@ -49,6 +54,7 @@ void drawNext(const PieceType piece, const Offset off, const int scale)
     drawPiece(getPiece(piece, 0), (const Coord){.x=12, .y=1}, off, scale);
 }
 
+// draws held piece
 void drawHoldPiece(const PieceType piece, const Offset off, const int scale)
 {
     setTextSize(scale);
@@ -57,6 +63,7 @@ void drawHoldPiece(const PieceType piece, const Offset off, const int scale)
         drawPiece(getPiece(piece, 0), (const Coord){.x=12, .y=5}, off, scale);
 }
 
+// draws lines cleared
 void drawLinesCleared(const int linesCleared, const Offset off, const int scale)
 {
     setTextSize(scale);
@@ -67,6 +74,7 @@ void drawLinesCleared(const int linesCleared, const Offset off, const int scale)
     drawTextCoord(buf, bposwCoord(12, 19, off, scale));
 }
 
+// draws all minos on board
 void drawBoard(PieceType *board, const Offset off, const int scale)
 {
     for(int y = 0; y < 20; y++){

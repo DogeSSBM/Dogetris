@@ -52,13 +52,21 @@ bool shouldPlacePiece(PieceType *board, const u16 minos, const Coord pos, const 
 void resetState(GameState *state);
 
 // Draw.h ---------------------------------------------------------------------
+// draws board grid lines
 void drawBoardLines(const Offset off, const int scale);
+// draws mino at board x y pos
 void drawMinoPos(const int x, const int y, const Offset off, const int scale, const Color color1, const Color color2);
+// draws grey squares surrounding board
 void drawBorders(const Offset off, const int scale);
+// draws piece at board pos
 void drawPiece(const Piece piece, const Coord pos, const Offset off, const int scale);
+// draws next piece
 void drawNext(const PieceType piece, const Offset off, const int scale);
+// draws held piece
 void drawHoldPiece(const PieceType piece, const Offset off, const int scale);
+// draws lines cleared
 void drawLinesCleared(const int linesCleared, const Offset off, const int scale);
+// draws all minos on board
 void drawBoard(PieceType *board, const Offset off, const int scale);
 
 #endif
