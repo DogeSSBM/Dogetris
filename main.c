@@ -10,11 +10,7 @@
 
 void loose(GameState *state, const Offset lastOff, int lastScale, const uint lastFrameTime)
 {
-    drawBorders(lastOff, lastScale);
-    drawBoardLines(lastOff, lastScale);
-    drawPiece(state->piece, state->piecePos, lastOff, lastScale);
-    drawBoard(state->board, lastOff, lastScale);
-    drawNext(state->nextPieceType, lastOff, lastScale);
+    drawAll(state, lastOff, lastScale);
 
     char *overStr = "Game Over!";
     char *contStr = "Hold space to start a new game.";
@@ -36,13 +32,7 @@ void loose(GameState *state, const Offset lastOff, int lastScale, const uint las
         if(keyPressed(SC_P))
             printBoard(state->board);
 
-        drawBorders(off, scale);
-        drawBoardLines(off, scale);
-        drawPiece(state->piece, state->piecePos, off, scale);
-        drawBoard(state->board, off, scale);
-        drawNext(state->nextPieceType, off, scale);
-        drawHoldPiece(state->holdPiece, off, scale);
-        drawLinesCleared(state->linesCleared, off, scale);
+        drawAll(state, off, scale);
 
         setTextColor(overColor);
         setTextSize(scale*2);
@@ -154,13 +144,7 @@ int main(void)
         if(keyPressed(SC_P))
             printBoard(state.board);
 
-        drawBorders(off, scale);
-        drawBoardLines(off, scale);
-        drawPiece(state.piece, state.piecePos, off, scale);
-        drawBoard(state.board, off, scale);
-        drawNext(state.nextPieceType, off, scale);
-        drawHoldPiece(state.holdPiece, off, scale);
-        drawLinesCleared(state.linesCleared, off, scale);
+        drawAll(&state, off, scale);
 
         frameEnd(frameTime);
     }

@@ -86,4 +86,16 @@ void drawBoard(PieceType *board, const Offset off, const int scale)
     }
 }
 
+// draws everything
+void drawAll(GameState *state, const Offset off, const int scale)
+{
+    drawBorders(off, scale);
+    drawBoardLines(off, scale);
+    drawPiece(state->piece, state->piecePos, off, scale);
+    drawBoard(state->board, off, scale);
+    drawNext(state->nextPieceType, off, scale);
+    drawHoldPiece(state->holdPiece, off, scale);
+    drawLinesCleared(state->linesCleared, off, scale);
+}
+
 #endif
