@@ -17,6 +17,7 @@ void resetState(GameState *state)
     state->holdAvailable = true;
     state->lastMoveDown = getTicks();
     state->fallTime = 1000;
+    state->score = 0;
 }
 
 #endif
