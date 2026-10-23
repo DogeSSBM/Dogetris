@@ -3,6 +3,7 @@
 
 PieceType globalBoard[10*20];
 
+// prints state of board to stdout
 void printBoard(PieceType *board)
 {
     printf("board:\n");
@@ -18,6 +19,7 @@ void printBoard(PieceType *board)
     printf("+\n");
 }
 
+// places all valid minos of a piece on the board
 void boardPlacePiece(PieceType *board, const Piece piece, const Coord pos)
 {
     for(int y = 0; y < 4; y++){
@@ -28,6 +30,7 @@ void boardPlacePiece(PieceType *board, const Piece piece, const Coord pos)
     }
 }
 
+// returns true if all minos of a piece fit on the board at pos. doesnt check minos above visible board
 bool minosFit(PieceType *board, const u16 minos, const Coord pos)
 {
     for(int y = 0; y < 4; y++){
@@ -45,6 +48,7 @@ bool minosFit(PieceType *board, const u16 minos, const Coord pos)
     return true;
 }
 
+// shifts all lines above stopLine down one. fills top row with PIECE_EMPTY
 void shiftLinesDown(PieceType *board, const int stopLine)
 {
     for(int y = stopLine; y > 0; y--){
@@ -57,20 +61,22 @@ void shiftLinesDown(PieceType *board, const int stopLine)
     }
 }
 
-bool lineFull(PieceType *board)
+// returns true if line at y is full of minos
+bool lineFull(PieceType *board, const int y)
 {
     for(int x = 0; x < 10; x++){
-        if(board[x] == PIECE_EMPTY)
+        if(board[x+y*20] == PIECE_EMPTY)
             return false;
     }
     return true;
 }
 
+// clears all full lines on board. returns number of lines cleared
 int clearLines(PieceType *board)
 {
     int lines = 0;
     for(size_t y = 0; y < 20; y++){
-        if(lineFull(board+y*20)){
+        if(lineFull(board, y)){
             lines++;
             shiftLinesDown(board, y);
         }
@@ -78,18 +84,23 @@ int clearLines(PieceType *board)
     return lines;
 }
 
+// returns true if all minos of piece fit when moved down one
 bool canMoveDown(PieceType *board, const u16 minos, Coord pos)
 {
     return minosFit(board, minos, iC(pos.x, pos.y+1));
 }
 
+// returns lowest possible pos where piece will fit. returns pos if minos already dont fit
 Coord softDrop(PieceType *board, const u16 minos, Coord pos)
 {
+    if(!minosFit(board, minos, pos))
+        return pos;
     while(canMoveDown(board, minos, pos))
         pos.y++;
     return pos;
 }
 
+// returns true if piece should be placed based on when it was last moved down, down key state, and if piece can move down
 bool shouldPlacePiece(PieceType *board, const u16 minos, const Coord pos, const uint frameTime, const uint lastMoveDown)
 {
     if(!canMoveDown(board, minos, pos)){

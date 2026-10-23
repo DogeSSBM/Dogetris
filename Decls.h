@@ -17,14 +17,23 @@ int rotateOff(PieceType *board, const u16 minos, Coord *pos, const Offset off[5]
 bool rotate(PieceType *board, Piece *piece, Coord *pos, const int rotation);
 
 // Board.h --------------------------------------------------------------------
+// prints state of board to stdout
 void printBoard(PieceType *board);
+// places all valid minos of a piece on the board
 void boardPlacePiece(PieceType *board, const Piece piece, const Coord pos);
+// returns true if all minos of a piece fit on the board at pos. doesnt check minos above visible board
 bool minosFit(PieceType *board, const u16 minos, const Coord pos);
+// shifts all lines above stopLine down one. fills top row with PIECE_EMPTY
 void shiftLinesDown(PieceType *board, const int stopLine);
-bool lineFull(PieceType *board);
+// returns true if line at y is full of minos
+bool lineFull(PieceType *board, const int y);
+// clears all full lines on board. returns number of lines cleared
 int clearLines(PieceType *board);
+// returns true if all minos of piece fit when moved down one
 bool canMoveDown(PieceType *board, const u16 minos, Coord pos);
+// returns lowest possible pos where piece will fit. returns pos if minos already dont fit
 Coord softDrop(PieceType *board, const u16 minos, Coord pos);
+// returns true if piece should be placed based on when it was last moved down, down key state, and if piece can move down
 bool shouldPlacePiece(PieceType *board, const u16 minos, const Coord pos, const uint frameTime, const uint lastMoveDown);
 
 // State.h --------------------------------------------------------------------
