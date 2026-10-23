@@ -37,7 +37,7 @@ bool minosFit(PieceType *board, const u16 minos, const Coord pos)
         for(int x = 0; x < 4; x++){
             if(minoPos(minos, x, y)){
                 if(pos.x+x >= 10 || pos.y + y >= 20 || pos.x+x < 0)
-                return false;
+                    return false;
                 if(pos.y+y < 0)
                     continue;
                 if(board[(pos.y+y)*20+(pos.x+x)] != PIECE_EMPTY)
