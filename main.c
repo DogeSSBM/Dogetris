@@ -94,8 +94,10 @@ int main(void)
         const int scale = getScale(windowLen);
         const Offset off = getOffset(windowLen, scale);
 
-        if(keyPressed(SC_SPACE))
+        if(keyPressed(SC_SPACE)){
             state.piecePos = softDrop(state.board, state.piece.minos, state.piecePos);
+            state.lastMoveDown = frameTime;
+        }
 
         const int rotation = (keyPressed(SC_E) || keyPressed(SC_X)) - (keyPressed(SC_Q) || keyPressed(SC_Z));
         if(rotation)
