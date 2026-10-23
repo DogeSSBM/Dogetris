@@ -1,6 +1,7 @@
 #ifndef STATE_H
 #define STATE_H
 
+// resets state to starting game state
 void resetState(GameState *state)
 {
     for(int y = 0; y < 20; y++){

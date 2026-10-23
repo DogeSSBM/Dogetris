@@ -48,6 +48,7 @@ Coord softDrop(PieceType *board, const u16 minos, Coord pos);
 bool shouldPlacePiece(PieceType *board, const u16 minos, const Coord pos, const uint frameTime, const uint lastMoveDown);
 
 // State.h --------------------------------------------------------------------
+// resets state to starting game state
 void resetState(GameState *state);
 
 // Draw.h ---------------------------------------------------------------------
