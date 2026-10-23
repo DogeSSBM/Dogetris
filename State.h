@@ -15,6 +15,7 @@ void resetState(GameState *state)
     state->holdPiece = PIECE_EMPTY;
     state->holdAvailable = true;
     state->lastMoveDown = getTicks();
+    state->fallTime = 1000;
 }
 
 #endif

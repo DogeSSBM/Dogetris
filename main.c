@@ -130,7 +130,7 @@ int main(void)
             state.holdAvailable = false;
         }
 
-        if(placePiece(state.board, state.piece.minos, state.piecePos, frameTime, state.lastMoveDown)){
+        if(shouldPlacePiece(state.board, state.piece.minos, state.piecePos, frameTime, state.lastMoveDown)){
             if(!pieceVisible(state.piece.minos, state.piecePos)){
                 loose(&state, off, scale, frameTime);
                 continue;
@@ -147,7 +147,7 @@ int main(void)
             state.holdAvailable = true;
         }else{
             Offset move = dirKeyPressedOffset();
-            if(frameTime - state.lastMoveDown > 1000){
+            if(frameTime - state.lastMoveDown > state.fallTime){
                 move.y = 1;
                 state.lastMoveDown = frameTime;
             }

@@ -25,7 +25,7 @@ bool lineFull(PieceType *board);
 int clearLines(PieceType *board);
 bool canMoveDown(PieceType *board, const u16 minos, Coord pos);
 Coord softDrop(PieceType *board, const u16 minos, Coord pos);
-bool placePiece(PieceType *board, const u16 minos, const Coord pos, const uint frameTime, const uint lastMoveDown);
+bool shouldPlacePiece(PieceType *board, const u16 minos, const Coord pos, const uint frameTime, const uint lastMoveDown);
 
 // State.h --------------------------------------------------------------------
 void resetState(GameState *state);

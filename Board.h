@@ -90,7 +90,7 @@ Coord softDrop(PieceType *board, const u16 minos, Coord pos)
     return pos;
 }
 
-bool placePiece(PieceType *board, const u16 minos, const Coord pos, const uint frameTime, const uint lastMoveDown)
+bool shouldPlacePiece(PieceType *board, const u16 minos, const Coord pos, const uint frameTime, const uint lastMoveDown)
 {
     if(!canMoveDown(board, minos, pos)){
         if(dirKeyPressedOffset().y > 0 || frameTime - lastMoveDown > 1000)

@@ -20,6 +20,7 @@ typedef struct{
     PieceType holdPiece;
     bool holdAvailable;
     uint lastMoveDown;
+    uint fallTime;
 }GameState;
 
 #endif
