@@ -65,7 +65,7 @@ void drawNext(const PieceType piece, const Offset off, const int scale);
 // draws held piece
 void drawHoldPiece(const PieceType piece, const Offset off, const int scale);
 // draws lines cleared
-void drawLinesCleared(const int linesCleared, const Offset off, const int scale);
+void drawLinesCleared(const uint linesCleared, const Offset off, const int scale);
 // draws all minos on board
 void drawBoard(PieceType *board, const Offset off, const int scale);
 // draws everything

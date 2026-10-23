@@ -18,7 +18,7 @@ typedef struct{
 
 typedef struct{
     PieceType *board;
-    int linesCleared;
+    uint linesCleared;
     Coord piecePos;
     Piece piece;
     PieceType nextPieceType;
@@ -26,6 +26,7 @@ typedef struct{
     bool holdAvailable;
     uint lastMoveDown;
     uint fallTime;
+
 }GameState;
 
 #endif

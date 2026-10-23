@@ -64,13 +64,13 @@ void drawHoldPiece(const PieceType piece, const Offset off, const int scale)
 }
 
 // draws lines cleared
-void drawLinesCleared(const int linesCleared, const Offset off, const int scale)
+void drawLinesCleared(const uint linesCleared, const Offset off, const int scale)
 {
     setTextSize(scale);
     drawTextCoord("Lines", bposwCoord(12, 17, off, scale));
     drawTextCoord("Cleared", bposwCoord(12, 18, off, scale));
     char buf[32] = {0};
-    sprintf(buf, "%i", linesCleared);
+    sprintf(buf, "%u", linesCleared);
     drawTextCoord(buf, bposwCoord(12, 19, off, scale));
 }
 
