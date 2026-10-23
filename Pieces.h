@@ -21,18 +21,21 @@ Color pieceColor2[PIECE_NUM] = {
     {.r=121,.g=  0,.b=  0,.a=255}
 };
 
+// returns true if the mino at pos x y is filled
 bool minoPos(const u16 minos, const int x, const int y)
 {
     assertExpr(x >= 0 && x < 4 && y >= 0 && y < 4);
     return (1 << 15) & (minos << (y*4 + x));
 }
 
+// returns true if the mino at pos is filled
 bool minoCoord(const u16 minos, const Coord pos)
 {
     assertExpr(pos.x >= 0 && pos.x < 4 && pos.y >= 0 && pos.y < 4);
     return (1 << 15) & (minos << (pos.y*4 + pos.x));
 }
 
+// gets piece of corrosponding type and rotation
 Piece getPiece(const PieceType type, const int rotation)
 {
     assertExpr(rotation >= 0 && rotation < 4);
@@ -59,6 +62,7 @@ Piece getPiece(const PieceType type, const int rotation)
     return (Piece){0};
 }
 
+// returns true if all minos are visible on board
 bool pieceVisible(const u16 minos, const Coord pos)
 {
     for(int y = 0; y < 4; y++){
@@ -70,6 +74,7 @@ bool pieceVisible(const u16 minos, const Coord pos)
     return false;
 }
 
+// sets pos to the first valid rotation offset and returns its index. if none are valid returns -1
 int rotateOff(PieceType *board, const u16 minos, Coord *pos, const Offset off[5])
 {
     for(int i = 0; i < 5; i++){
@@ -82,6 +87,7 @@ int rotateOff(PieceType *board, const u16 minos, Coord *pos, const Offset off[5]
     return -1;
 }
 
+// attempts to rotate piece. modifies piece and pos and returns true on success. otherwise returns false
 bool rotate(PieceType *board, Piece *piece, Coord *pos, const int rotation)
 {
     assertExpr(piece && pos && (rotation == -1 || rotation == 1));
@@ -152,6 +158,5 @@ bool rotate(PieceType *board, Piece *piece, Coord *pos, const int rotation)
 
     return false;
 }
-
 
 #endif

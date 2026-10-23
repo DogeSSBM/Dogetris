@@ -14,11 +14,17 @@ Coord bwCoord(const Coord pos, const Offset off, const int scale);
 Coord bposwCoord(const int x, const int y, const Offset off, const int scale);
 
 // Pieces.h -------------------------------------------------------------------
+// returns true if the mino at pos x y is filled
 bool minoPos(const u16 minos, const int x, const int y);
+// returns true if the mino at pos is filled
 bool minoCoord(const u16 minos, const Coord pos);
+// gets piece of corrosponding type and rotation
 Piece getPiece(const PieceType type, const int rotation);
+// returns true if all minos are visible on board
 bool pieceVisible(const u16 minos, const Coord pos);
+// sets pos to the first valid rotation offset and returns its index. if none are valid returns -1
 int rotateOff(PieceType *board, const u16 minos, Coord *pos, const Offset off[5]);
+// attempts to rotate piece. modifies piece and pos and returns true on success. otherwise returns false
 bool rotate(PieceType *board, Piece *piece, Coord *pos, const int rotation);
 
 // Board.h --------------------------------------------------------------------
