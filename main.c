@@ -1,9 +1,4 @@
 #include "DogeLib/Includes.h"
-#define XLEN            18
-#define YLEN            21
-#define BOARDXLEN       10
-#define BOARDYLEN       20
-#define DEFAULTSCALE    40
 #include "Types.h"
 #include "PieceRotDefs.h"
 #include "Decls.h"
