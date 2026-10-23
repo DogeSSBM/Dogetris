@@ -98,4 +98,50 @@ void drawAll(GameState *state, const Offset off, const int scale)
     drawLinesCleared(state->linesCleared, off, scale);
 }
 
+// draws xStr and constStr and progress bar for key heldTime. used for pause and loose
+void drawHoldToX(char *xStr, char *contStr, const Color xColor, const int heldTime, const Length windowLen, const int scale)
+{
+    setTextColor(xColor);
+    setTextSize(scale*2);
+    const Length overLen = textLength(xStr);
+    const Coord overPos = iC(windowLen.x/2, windowLen.y/4);
+    setColor(BLACK);
+    fillRectCenteredCoordLength(overPos, overLen);
+    setColor(DARKERGREY);
+    fillBorderCenteredCoord(overPos, overLen, imax(scale/12, 4));
+    drawTextCenteredCoord(xStr, overPos);
+
+    setTextSize((scale*2)/3);
+    setTextColor(LIGHTGREY);
+    const Length contLen = textLength(contStr);
+    const Coord contPos = iC(windowLen.x/2, windowLen.y/2);
+    setColor(BLACK);
+    fillRectCenteredCoordLength(contPos, contLen);
+    setColor(DARKERGREY);
+    fillBorderCenteredCoord(contPos, contLen, imax(scale/12, 4));
+    drawTextCenteredCoord(contStr, contPos);
+
+    if(heldTime){
+        const Coord barPos = iC(windowLen.x/2, (windowLen.y/4)*3);
+        setColor(BLACK);
+        fillRectCenteredCoordLength(barPos, contLen);
+        setColor(xColor);
+        fillRectCoordLength(coordUncenter(barPos, contLen), iC(contLen.x*(heldTime/1500.0f), contLen.y));
+        setColor(DARKERGREY);
+        fillBorderCenteredCoord(barPos, contLen, imax(scale/12, 4));
+    }
+}
+
+// cycles to the next color in the rainbow
+void rainbowNextColor(Color *color, int *index)
+{
+    u8 *rgb[3] = {&color->r, &color->g, &color->b};
+    if(*rgb[*index] == 0){
+        *index = wrap(*index+1, 0, 3);
+    }else{
+        *rgb[*index] = imax((int)*rgb[*index] - 4, 0);
+        *rgb[wrap(*index+1, 0, 3)] = imin((int)*rgb[wrap(*index+1, 0, 3)] + 4, 255);
+    }
+}
+
 #endif

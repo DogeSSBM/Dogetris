@@ -70,5 +70,9 @@ void drawLinesCleared(const int linesCleared, const Offset off, const int scale)
 void drawBoard(PieceType *board, const Offset off, const int scale);
 // draws everything
 void drawAll(GameState *state, const Offset off, const int scale);
+// draws xStr and constStr and progress bar for key heldTime. used for pause and loose
+void drawHoldToX(char *xStr, char *contStr, const Color xColor, const int heldTime, const Length windowLen, const int scale);
+// cycles to the next color in the rainbow
+void rainbowNextColor(Color *color, int *index);
 
 #endif
