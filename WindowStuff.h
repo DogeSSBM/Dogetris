@@ -1,6 +1,7 @@
 #ifndef WINDOWSTUFF_H
 #define WINDOWSTUFF_H
 
+// inits size, position, and name of window
 void windowInit(void)
 {
     const Length defaultWindowLen = {
@@ -16,6 +17,7 @@ void windowInit(void)
     setWindowTitle("Dogetris");
 }
 
+// gets the size that one mino should be based on window size
 int getScale(const Length windowLen)
 {
     return imin(
@@ -24,6 +26,7 @@ int getScale(const Length windowLen)
     );
 }
 
+// gets the top left offset the board should be drawn at based on window size and scale
 Offset getOffset(const Length windowLen, const int scale)
 {
     const Length totalLen = {.x=XLEN*scale, .y=YLEN*scale};
@@ -31,15 +34,16 @@ Offset getOffset(const Length windowLen, const int scale)
     return coordDivi(diff, 2);
 }
 
-Coord atCoord(const Coord pos, const Offset off, const int scale)
+// takes a board pos coord and returns its window position coord
+Coord bwCoord(const Coord pos, const Offset off, const int scale)
 {
     return coordAdd(coordMuli(pos, scale), off);
 }
 
-Coord atPos(const int x, const int y, const Offset off, const int scale)
+// takes a board x y pos and returns its window position coord
+Coord bposwCoord(const int x, const int y, const Offset off, const int scale)
 {
-    return coordAdd(coordMuli((const Coord){.x=x, .y=y}, scale), off);
+    return bwCoord(iC(x, y), off, scale);
 }
-
 
 #endif

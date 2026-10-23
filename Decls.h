@@ -2,11 +2,16 @@
 #define DECLS_H
 
 // WindowStuff.h --------------------------------------------------------------
+// inits size, position, and name of window
 void windowInit(void);
+// gets the size that one mino should be based on window size
 int getScale(const Length windowLen);
+// gets the top left offset the board should be drawn at based on window size and scale
 Offset getOffset(const Length windowLen, const int scale);
-Coord atCoord(const Coord pos, const Offset off, const int scale);
-Coord atPos(const int x, const int y, const Offset off, const int scale);
+// takes a board pos coord and returns its window position coord
+Coord bwCoord(const Coord pos, const Offset off, const int scale);
+// takes a board x y pos and returns its window position coord
+Coord bposwCoord(const int x, const int y, const Offset off, const int scale);
 
 // Pieces.h -------------------------------------------------------------------
 bool minoPos(const u16 minos, const int x, const int y);

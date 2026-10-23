@@ -13,7 +13,7 @@ void drawBoardLines(const Offset off, const int scale)
 
 void drawMinoPos(const int x, const int y, const Offset off, const int scale, const Color color1, const Color color2)
 {
-    const Coord boardPos = atPos(x, y, off, scale);
+    const Coord boardPos = bposwCoord(x, y, off, scale);
     setColor(color2);
     fillSquareCoord(boardPos, scale);
     setColor(color1);
@@ -45,14 +45,14 @@ void drawPiece(const Piece piece, const Coord pos, const Offset off, const int s
 void drawNext(const PieceType piece, const Offset off, const int scale)
 {
     setTextSize(scale);
-    drawTextCoord("Next", atPos(12, 0, off, scale));
+    drawTextCoord("Next", bposwCoord(12, 0, off, scale));
     drawPiece(getPiece(piece, 0), (const Coord){.x=12, .y=1}, off, scale);
 }
 
 void drawHoldPiece(const PieceType piece, const Offset off, const int scale)
 {
     setTextSize(scale);
-    drawTextCoord("Hold", atPos(12, 4, off, scale));
+    drawTextCoord("Hold", bposwCoord(12, 4, off, scale));
     if(piece != PIECE_EMPTY)
         drawPiece(getPiece(piece, 0), (const Coord){.x=12, .y=5}, off, scale);
 }
@@ -60,11 +60,11 @@ void drawHoldPiece(const PieceType piece, const Offset off, const int scale)
 void drawLinesCleared(const int linesCleared, const Offset off, const int scale)
 {
     setTextSize(scale);
-    drawTextCoord("Lines", atPos(12, 17, off, scale));
-    drawTextCoord("Cleared", atPos(12, 18, off, scale));
+    drawTextCoord("Lines", bposwCoord(12, 17, off, scale));
+    drawTextCoord("Cleared", bposwCoord(12, 18, off, scale));
     char buf[32] = {0};
     sprintf(buf, "%i", linesCleared);
-    drawTextCoord(buf, atPos(12, 19, off, scale));
+    drawTextCoord(buf, bposwCoord(12, 19, off, scale));
 }
 
 void drawBoard(PieceType *board, const Offset off, const int scale)
