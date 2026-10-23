@@ -8,17 +8,57 @@
 #include "State.h"
 #include "Draw.h"
 
+void drawHoldToX(char *xStr, char *contStr, const Color xColor, const int heldTime, const Length windowLen, const int scale)
+{
+    setTextColor(xColor);
+    setTextSize(scale*2);
+    const Length overLen = textLength(xStr);
+    const Coord overPos = iC(windowLen.x/2, windowLen.y/4);
+    setColor(BLACK);
+    fillRectCenteredCoordLength(overPos, overLen);
+    setColor(DARKERGREY);
+    fillBorderCenteredCoord(overPos, overLen, imax(scale/12, 4));
+    drawTextCenteredCoord(xStr, overPos);
+
+    setTextSize((scale*2)/3);
+    setTextColor(LIGHTGREY);
+    const Length contLen = textLength(contStr);
+    const Coord contPos = iC(windowLen.x/2, windowLen.y/2);
+    setColor(BLACK);
+    fillRectCenteredCoordLength(contPos, contLen);
+    setColor(DARKERGREY);
+    fillBorderCenteredCoord(contPos, contLen, imax(scale/12, 4));
+    drawTextCenteredCoord(contStr, contPos);
+
+    if(heldTime){
+        const Coord barPos = iC(windowLen.x/2, (windowLen.y/4)*3);
+        setColor(BLACK);
+        fillRectCenteredCoordLength(barPos, contLen);
+        setColor(xColor);
+        fillRectCoordLength(coordUncenter(barPos, contLen), iC(contLen.x*(heldTime/1500.0f), contLen.y));
+        setColor(DARKERGREY);
+        fillBorderCenteredCoord(barPos, contLen, imax(scale/12, 4));
+    }
+}
+
+void rainbowNextColor(Color *color, int *index)
+{
+    u8 *rgb[3] = {&color->r, &color->g, &color->b};
+    if(*rgb[*index] == 0){
+        *index = wrap(*index+1, 0, 3);
+    }else{
+        *rgb[*index] = imax((int)*rgb[*index] - 4, 0);
+        *rgb[wrap(*index+1, 0, 3)] = imin((int)*rgb[wrap(*index+1, 0, 3)] + 4, 255);
+    }
+}
+
 void loose(GameState *state, const Offset lastOff, int lastScale, const uint lastFrameTime)
 {
     drawAll(state, lastOff, lastScale);
-
-    char *overStr = "Game Over!";
-    char *contStr = "Hold space to start a new game.";
-
     frameEnd(lastFrameTime);
     int index = 0;
-    Color overColor = RED;
-    u8 *rgb[3] = {&overColor.r, &overColor.g, &overColor.b};
+    Color color = RED;
+
     while(keyHeldTime(SC_SPACE) < 1500){
         const uint frameTime = frameStart();
 
@@ -33,47 +73,42 @@ void loose(GameState *state, const Offset lastOff, int lastScale, const uint las
             printBoard(state->board);
 
         drawAll(state, off, scale);
-
-        setTextColor(overColor);
-        setTextSize(scale*2);
-        const Length overLen = textLength(overStr);
-        const Coord overPos = iC(windowLen.x/2, windowLen.y/4);
-        setColor(BLACK);
-        fillRectCenteredCoordLength(overPos, overLen);
-        setColor(DARKERGREY);
-        fillBorderCenteredCoord(overPos, overLen, imax(scale/12, 4));
-        drawTextCenteredCoord(overStr, overPos);
-
-        setTextSize((scale*2)/3);
-        setTextColor(LIGHTGREY);
-        const Length contLen = textLength(contStr);
-        const Coord contPos = iC(windowLen.x/2, windowLen.y/2);
-        setColor(BLACK);
-        fillRectCenteredCoordLength(contPos, contLen);
-        setColor(DARKERGREY);
-        fillBorderCenteredCoord(contPos, contLen, imax(scale/12, 4));
-        drawTextCenteredCoord(contStr, contPos);
-
-        if(keyState(SC_SPACE)){
-            const Coord barPos = iC(windowLen.x/2, (windowLen.y/4)*3);
-            setColor(BLACK);
-            fillRectCenteredCoordLength(barPos, contLen);
-            setColor(overColor);
-            fillRectCoordLength(coordUncenter(barPos, contLen), iC(contLen.x*(keyHeldTime(SC_SPACE)/1500.0f), contLen.y));
-            setColor(DARKERGREY);
-            fillBorderCenteredCoord(barPos, contLen, imax(scale/12, 4));
-        }
-
-        if(*rgb[index] == 0)
-            index = wrap(index+1, 0, 3);
-        else{
-            *rgb[index] = imax((int)*rgb[index] - 4, 0);
-            *rgb[wrap(index+1, 0, 3)] = imin((int)*rgb[wrap(index+1, 0, 3)] + 4, 255);
-        }
+        drawHoldToX("Game Over!", "Hold space to start a new game.", color, keyHeldTime(SC_SPACE), windowLen, scale);
+        rainbowNextColor(&color, &index);
 
         frameEnd(frameTime);
     }
     resetState(state);
+}
+
+void pause(GameState *state, const Offset lastOff, int lastScale, const uint lastFrameTime)
+{
+    drawAll(state, lastOff, lastScale);
+    frameEnd(lastFrameTime);
+    int index = 0;
+    Color color = RED;
+    uint frameTime = lastFrameTime;
+
+    while(keyHeldTime(SC_RETURN) < 1500){
+        frameTime = frameStart();
+
+        if(keyPressed(SC_ESCAPE))
+            exit(0);
+
+        const Length windowLen = getWindowLen();
+        const int scale = getScale(windowLen);
+        const Offset off = getOffset(windowLen, scale);
+
+        if(keyPressed(SC_P))
+            printBoard(state->board);
+
+        drawAll(state, off, scale);
+        drawHoldToX("Paused!", "Hold Enter to resume.", color, keyHeldTime(SC_RETURN), windowLen, scale);
+        rainbowNextColor(&color, &index);
+
+        frameEnd(frameTime);
+    }
+    state->lastMoveDown += frameTime - lastFrameTime;
 }
 
 int main(void)
@@ -93,6 +128,11 @@ int main(void)
         const Length windowLen = getWindowLen();
         const int scale = getScale(windowLen);
         const Offset off = getOffset(windowLen, scale);
+
+        if(keyPressed(SC_RETURN)){
+            pause(&state, off, scale, frameTime);
+            continue;
+        }
 
         if(keyPressed(SC_SPACE)){
             state.piecePos = softDrop(state.board, state.piece.minos, state.piecePos);
@@ -134,6 +174,7 @@ int main(void)
             state.holdAvailable = true;
         }else{
             Offset move = dirKeyPressedOffset();
+            move.y = move.y < 0 ? 0 : move.y;
             if(frameTime - state.lastMoveDown > state.fallTime){
                 move.y = 1;
                 state.lastMoveDown = frameTime;
