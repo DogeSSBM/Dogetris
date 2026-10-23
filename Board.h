@@ -100,6 +100,13 @@ Coord sonicDrop(PieceType *board, const u16 minos, Coord pos)
     return pos;
 }
 
+// returns true if piece should move down for a soft drop
+bool shouldSoftDrop(const uint frameTime, const uint lastMoveDown)
+{
+    const uint downHeldTime = imax(keyHeldTime(SC_S), keyHeldTime(SC_DOWN));
+    return downHeldTime > 500 && (frameTime - lastMoveDown > 50);
+}
+
 // returns true if piece should be placed based on when it was last moved down, down key state, soft drop state, and if piece can move down
 bool shouldPlacePiece(PieceType *board, const u16 minos, const Coord pos, const uint frameTime, const uint lastMoveDown)
 {
@@ -110,10 +117,20 @@ bool shouldPlacePiece(PieceType *board, const u16 minos, const Coord pos, const 
     return false;
 }
 
-// returns true if piece should move down for a soft drop
-bool shouldSoftDrop(const uint frameTime, const uint lastMoveDown)
+// gets piece movement based on direction key presses / held time
+Offset movement(const uint frameTime, const uint lastMoveDown, const uint lastMoveLR, const uint fallTime)
 {
-    const uint downHeldTime = imax(keyHeldTime(SC_S), keyHeldTime(SC_DOWN));
-    return downHeldTime > 500 && (frameTime - lastMoveDown > 50);
+    Offset move = {
+        .x = (keyPressed(SC_RIGHT) || keyPressed(SC_D)) - (keyPressed(SC_LEFT) || keyPressed(SC_A)),
+        .y = keyPressed(SC_DOWN) || keyPressed(SC_S) || shouldSoftDrop(frameTime, lastMoveDown) || (frameTime - lastMoveDown > fallTime)
+    };
+    const int lrHeld = (keyHeld(SC_RIGHT) || keyHeld(SC_D)) - (keyHeld(SC_LEFT) || keyHeld(SC_A));
+    if(!move.x && lrHeld){
+        const int lrHoldTime = lrHeld > 0 ? imax(keyHeldTime(SC_RIGHT), keyHeldTime(SC_D)) : imax(keyHeldTime(SC_LEFT), keyHeldTime(SC_A));
+        if(iabs(lrHoldTime) > 500 && (frameTime - lastMoveLR > 50))
+            move.x = lrHeld;
+    }
+    return move;
 }
+
 #endif

@@ -44,10 +44,12 @@ int clearLines(PieceType *board);
 bool canMoveDown(PieceType *board, const u16 minos, Coord pos);
 // returns lowest possible pos where piece will fit. returns pos if minos already dont fit
 Coord sonicDrop(PieceType *board, const u16 minos, Coord pos);
-// returns true if piece should be placed based on when it was last moved down, down key state, and if piece can move down
-bool shouldPlacePiece(PieceType *board, const u16 minos, const Coord pos, const uint frameTime, const uint lastMoveDown);
 // returns true if piece should move down for a soft drop
 bool shouldSoftDrop(const uint frameTime, const uint lastMoveDown);
+// returns true if piece should be placed based on when it was last moved down, down key state, soft drop state, and if piece can move down
+bool shouldPlacePiece(PieceType *board, const u16 minos, const Coord pos, const uint frameTime, const uint lastMoveDown);
+// gets piece movement based on direction key presses / held time
+Offset movement(const uint frameTime, const uint lastMoveDown, const uint lastMoveLR, const uint fallTime);
 
 // State.h --------------------------------------------------------------------
 // resets state to starting game state

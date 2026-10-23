@@ -129,12 +129,11 @@ int main(void)
             state.linesCleared += lines;
             state.holdAvailable = true;
         }else{
-            Offset move = dirKeyPressedOffset();
-            move.y = move.y < 0 ? 0 : move.y;
-            if(shouldSoftDrop(frameTime, state.lastMoveDown) || frameTime - state.lastMoveDown > state.fallTime){
-                move.y = 1;
+            const Offset move = movement(frameTime, state.lastMoveDown, state.lastMoveLR, state.fallTime);
+            if(move.x)
+                state.lastMoveLR = frameTime;
+            if(move.y)
                 state.lastMoveDown = frameTime;
-            }
             const Coord newPiecePos = coordAdd(state.piecePos, move);
             if(minosFit(state.board, state.piece.minos, newPiecePos))
                 state.piecePos = newPiecePos;
