@@ -99,19 +99,8 @@ int main(void)
         if(rotation)
             rotate(state.board, &state.piece, &state.piecePos, rotation);
 
-        if(keyPressed(SC_LSHIFT) && state.holdAvailable){
-            const PieceType temp = state.holdPiece;
-            state.holdPiece = state.piece.type;
-            if(temp != PIECE_EMPTY){
-                state.piece = getPiece(temp, 0);
-            }else{
-                state.piece = getPiece(state.nextPieceType, 0);
-                state.nextPieceType = rand()%PIECE_NUM;
-            }
-            state.piecePos = (Coord){.x = 3, .y = -2};
-            state.lastMoveDown = frameTime;
-            state.holdAvailable = false;
-        }
+        if(keyPressed(SC_LSHIFT))
+            holdPiece(&state, frameTime);
 
         if(shouldPlacePiece(state.board, state.piece.minos, state.piecePos, frameTime, state.lastMoveDown)){
             if(!placePiece(&state, frameTime)){

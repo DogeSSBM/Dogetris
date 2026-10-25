@@ -49,4 +49,23 @@ bool placePiece(GameState *state, const uint frameTime)
     return true;
 }
 
+// holds piece if available. returns true if successful
+bool holdPiece(GameState* state, const uint frameTime)
+{
+    if(!state->holdAvailable)
+        return false;
+    const PieceType temp = state->holdPiece;
+    state->holdPiece = state->piece.type;
+    if(temp != PIECE_EMPTY){
+        state->piece = getPiece(temp, 0);
+    }else{
+        state->piece = getPiece(state->nextPieceType, 0);
+        state->nextPieceType = rand()%PIECE_NUM;
+    }
+    state->piecePos = (Coord){.x = 3, .y = -2};
+    state->lastMoveDown = frameTime;
+    state->holdAvailable = false;
+    return true;
+}
+
 #endif
