@@ -18,6 +18,7 @@ typedef struct{
 
 typedef struct{
     PieceType *board;
+    bool editMode;
     uint linesCleared;
     Coord piecePos;
     Piece piece;

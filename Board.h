@@ -118,13 +118,22 @@ bool shouldPlacePiece(PieceType *board, const u16 minos, const Coord pos, const 
 }
 
 // gets piece movement based on direction key presses / held time
-Offset getMovement(const uint frameTime, const uint lastMoveDown, const uint lastMoveLR, const uint fallTime)
+Offset getMovement(const bool editMode, const uint frameTime, const uint lastMoveDown, const uint lastMoveLR, const uint fallTime)
 {
-    Offset move = {
-        .x = (keyPressed(SC_RIGHT) || keyPressed(SC_D)) - (keyPressed(SC_LEFT) || keyPressed(SC_A)),
-        .y = keyPressed(SC_DOWN) || keyPressed(SC_S) || shouldSoftDrop(frameTime, lastMoveDown) || (frameTime - lastMoveDown > fallTime)
-    };
     const int lrHeld = (keyHeld(SC_RIGHT) || keyHeld(SC_D)) - (keyHeld(SC_LEFT) || keyHeld(SC_A));
+    Offset move = {0};
+    if(editMode){
+        move = (Offset){
+            .x = (keyPressed(SC_RIGHT) || keyPressed(SC_D)) - (keyPressed(SC_LEFT) || keyPressed(SC_A)),
+            .y = (keyPressed(SC_DOWN)  || keyPressed(SC_S)) - (keyPressed(SC_UP)   || keyPressed(SC_W))
+        };
+    }else{
+        move = (Offset){
+            .x = (keyPressed(SC_RIGHT) || keyPressed(SC_D)) - (keyPressed(SC_LEFT) || keyPressed(SC_A)),
+            .y = keyPressed(SC_DOWN) || keyPressed(SC_S) ||
+                 shouldSoftDrop(frameTime, lastMoveDown) || (frameTime - lastMoveDown > fallTime)
+        };
+    }
     if(!move.x && lrHeld){
         const int lrHoldTime = lrHeld > 0 ? imax(keyHeldTime(SC_RIGHT), keyHeldTime(SC_D)) : imax(keyHeldTime(SC_LEFT), keyHeldTime(SC_A));
         if(iabs(lrHoldTime) > 500 && (frameTime - lastMoveLR > 50))

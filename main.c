@@ -90,6 +90,9 @@ int main(void)
             continue;
         }
 
+        if(keyPressed(SC_RSHIFT))
+            state.editMode = !state.editMode;
+
         if(keyPressed(SC_SPACE)){
             state.piecePos = sonicDrop(state.board, state.piece.minos, state.piecePos);
             state.lastMoveDown = frameTime;
@@ -108,7 +111,7 @@ int main(void)
                 continue;
             }
         }else{
-            const Offset move = getMovement(frameTime, state.lastMoveDown, state.lastMoveLR, state.fallTime);
+            const Offset move = getMovement(state.editMode, frameTime, state.lastMoveDown, state.lastMoveLR, state.fallTime);
             movePiece(&state, move, frameTime);
         }
 
