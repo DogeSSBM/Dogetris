@@ -10,6 +10,7 @@ void resetState(GameState *state)
         }
     }
     state->linesCleared = 0;
+    state->level = 1;
     state->piecePos = iC(3, -2);
     state->piece = getPiece(rand()%PIECE_NUM, 0);
     state->nextPieceType = rand()%PIECE_NUM;
@@ -19,6 +20,7 @@ void resetState(GameState *state)
     state->lastMoveLR = state->lastMoveDown;
     state->fallTime = 1000;
     state->score = 0;
+    state->combo = -1;
 }
 
 // places piece on board and adds score. gets next piece. returns false on lose
@@ -33,16 +35,19 @@ bool placePiece(GameState *state, const uint frameTime)
     state->lastMoveDown = frameTime;
     const int lines = clearLines(state->board);
     if(lines){
-        int scoreAdded = 0;
+        state->combo++;
+        int scoreAdded = 50*state->combo*state->level;
         switch(lines){
-            case 1: scoreAdded = 100; break;
-            case 2: scoreAdded = 300; break;
-            case 3: scoreAdded = 500; break;
-            case 4: scoreAdded = 800; break;
+            case 1: scoreAdded += 100*state->level; break;
+            case 2: scoreAdded += 300*state->level; break;
+            case 3: scoreAdded += 500*state->level; break;
+            case 4: scoreAdded += 800*state->level; break;
             default: panic("unreachable"); break;
         }
         printf("%i lines cleared. +%i score\n", lines, scoreAdded);
         state->score += scoreAdded;
+    }else{
+        state->combo = -1;
     }
     state->linesCleared += lines;
     state->holdAvailable = true;

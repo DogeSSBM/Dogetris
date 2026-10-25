@@ -93,8 +93,16 @@ int main(void)
         if(keyPressed(SC_RSHIFT))
             state.editMode = !state.editMode;
         
-        if(mouseBtnPressed(MOUSE_L) && state.editMode)
-            edit(state.board, state.piece.minos, state.piecePos, off, scale);
+        if(state.editMode){
+            if(mouseBtnPressed(MOUSE_L))
+                edit(state.board, state.piece.minos, state.piecePos, off, scale);
+            const int changePiece = keyPressed(SC_PAGEDOWN) - keyPressed(SC_PAGEUP);
+            if(changePiece){
+                state.piece = getPiece(wrap(state.piece.type + changePiece, 0, PIECE_NUM), 0);
+                state.piecePos = (Coord){.x = 3, .y = -2};
+            }
+            state.lastMoveDown = frameTime;
+        }
 
         if(keyPressed(SC_SPACE)){
             state.piecePos = sonicDrop(state.board, state.piece.minos, state.piecePos);

@@ -19,6 +19,7 @@ typedef struct{
 typedef struct{
     PieceType *board;
     bool editMode;
+    uint level;
     uint linesCleared;
     Coord piecePos;
     Piece piece;
@@ -29,6 +30,7 @@ typedef struct{
     uint lastMoveLR;
     uint fallTime;
     uint score;
+    int combo;
 }GameState;
 
 #endif
