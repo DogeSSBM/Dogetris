@@ -114,39 +114,13 @@ int main(void)
         }
 
         if(shouldPlacePiece(state.board, state.piece.minos, state.piecePos, frameTime, state.lastMoveDown)){
-            if(!pieceVisible(state.piece.minos, state.piecePos)){
+            if(!placePiece(&state, frameTime)){
                 loose(&state, off, scale, frameTime);
                 continue;
             }
-            boardPlacePiece(state.board, state.piece, state.piecePos);
-            state.piecePos = (Coord){.x = 3, .y = -2};
-            state.piece = getPiece(state.nextPieceType, 0);
-            state.nextPieceType = rand()%PIECE_NUM;
-            state.lastMoveDown = frameTime;
-            const int lines = clearLines(state.board);
-            if(lines){
-                int scoreAdded = 0;
-                switch(lines){
-                    case 1: scoreAdded = 100; break;
-                    case 2: scoreAdded = 300; break;
-                    case 3: scoreAdded = 500; break;
-                    case 4: scoreAdded = 800; break;
-                    default: panic("unreachable"); break;
-                }
-                printf("%i lines cleared. +%i score\n", lines, scoreAdded);
-                state.score += scoreAdded;
-            }
-            state.linesCleared += lines;
-            state.holdAvailable = true;
         }else{
-            const Offset move = movement(frameTime, state.lastMoveDown, state.lastMoveLR, state.fallTime);
-            if(move.x)
-                state.lastMoveLR = frameTime;
-            if(move.y)
-                state.lastMoveDown = frameTime;
-            const Coord newPiecePos = coordAdd(state.piecePos, move);
-            if(minosFit(state.board, state.piece.minos, newPiecePos))
-                state.piecePos = newPiecePos;
+            const Offset move = getMovement(frameTime, state.lastMoveDown, state.lastMoveLR, state.fallTime);
+            movePiece(&state, move, frameTime);
         }
 
         if(keyPressed(SC_P))

@@ -49,11 +49,15 @@ bool shouldSoftDrop(const uint frameTime, const uint lastMoveDown);
 // returns true if piece should be placed based on when it was last moved down, down key state, soft drop state, and if piece can move down
 bool shouldPlacePiece(PieceType *board, const u16 minos, const Coord pos, const uint frameTime, const uint lastMoveDown);
 // gets piece movement based on direction key presses / held time
-Offset movement(const uint frameTime, const uint lastMoveDown, const uint lastMoveLR, const uint fallTime);
+Offset getMovement(const uint frameTime, const uint lastMoveDown, const uint lastMoveLR, const uint fallTime);
+// attempts to moves piece. updates last move times. returns true on success
+bool movePiece(GameState* state, const Offset move, const uint frameTime);
 
 // State.h --------------------------------------------------------------------
 // resets state to starting game state
 void resetState(GameState *state);
+// places piece on board and adds score. gets next piece. returns false on lose
+bool placePiece(GameState *state, const uint frameTime);
 
 // Draw.h ---------------------------------------------------------------------
 // draws board grid lines

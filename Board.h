@@ -118,7 +118,7 @@ bool shouldPlacePiece(PieceType *board, const u16 minos, const Coord pos, const 
 }
 
 // gets piece movement based on direction key presses / held time
-Offset movement(const uint frameTime, const uint lastMoveDown, const uint lastMoveLR, const uint fallTime)
+Offset getMovement(const uint frameTime, const uint lastMoveDown, const uint lastMoveLR, const uint fallTime)
 {
     Offset move = {
         .x = (keyPressed(SC_RIGHT) || keyPressed(SC_D)) - (keyPressed(SC_LEFT) || keyPressed(SC_A)),
@@ -131,6 +131,21 @@ Offset movement(const uint frameTime, const uint lastMoveDown, const uint lastMo
             move.x = lrHeld;
     }
     return move;
+}
+
+// attempts to moves piece. updates last move times. returns true on success
+bool movePiece(GameState* state, const Offset move, const uint frameTime)
+{
+    if(move.x)
+        state->lastMoveLR = frameTime;
+    if(move.y)
+        state->lastMoveDown = frameTime;
+    const Coord newPiecePos = coordAdd(state->piecePos, move);
+    if(minosFit(state->board, state->piece.minos, newPiecePos)){
+        state->piecePos = newPiecePos;
+        return true;
+    }
+    return false;
 }
 
 #endif
