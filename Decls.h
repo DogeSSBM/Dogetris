@@ -78,6 +78,8 @@ void drawLinesCleared(const uint linesCleared, const Offset off, const int scale
 void drawScore(const uint score, const Offset off, const int scale);
 // draws all minos on board
 void drawBoard(PieceType *board, const Offset off, const int scale);
+// outlines mino under mouse when in edit mode
+void drawEditModeOutline(const Offset off, const int scale);
 // draws everything
 void drawAll(GameState *state, const Offset off, const int scale);
 // draws xStr and constStr and progress bar for key heldTime. used for pause and loose

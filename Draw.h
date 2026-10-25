@@ -96,6 +96,16 @@ void drawBoard(PieceType *board, const Offset off, const int scale)
     }
 }
 
+// outlines mino under mouse when in edit mode
+void drawEditModeOutline(const Offset off, const int scale)
+{
+    const Coord pos = wbCoord(mouse.pos, off, scale);
+    if(pos.x > 0 && pos.x < 11 && pos.y >= 0 && pos.y < 20){
+        setColor(LIGHTGREY);
+        fillBorderCoordSquare(bwCoord(pos, off, scale), scale, -imax(scale/12, 1));
+    }
+}
+
 // draws everything
 void drawAll(GameState *state, const Offset off, const int scale)
 {
@@ -107,6 +117,8 @@ void drawAll(GameState *state, const Offset off, const int scale)
     drawHoldPiece(state->holdPiece, off, scale);
     drawLinesCleared(state->linesCleared, off, scale);
     drawScore(state->score, off, scale);
+    if(state->editMode)
+        drawEditModeOutline(off, scale);
 }
 
 // draws xStr and constStr and progress bar for key heldTime. used for pause and loose

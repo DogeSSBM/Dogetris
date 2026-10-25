@@ -46,4 +46,10 @@ Coord bposwCoord(const int x, const int y, const Offset off, const int scale)
     return bwCoord(iC(x, y), off, scale);
 }
 
+// takes a window pos coord and returns its board coord
+Coord wbCoord(const Coord pos, const Offset off, const int scale)
+{
+    return coordDivi(coordSub(pos, off), scale);
+}
+
 #endif
