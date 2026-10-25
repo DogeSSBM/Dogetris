@@ -144,7 +144,7 @@ bool rotate(PieceType *board, Piece *piece, Coord *pos, const int rotation)
             const Offset off[5] = {{.x= 0,.y= 0},{.x= 1,.y= 0},{.x= 1,.y= 1},{.x= 0,.y=-2},{.x= 1,.y=-2}};
             kickIndex = rotateOff(board, nextPiece.minos, pos, off);
         }else if(piece->rotation == 3 && rotation == -1){
-            const Offset off[5] = {{.x= 0,.y= 0},{.x=-1,.y= 0},{.x=-1,.y=-1},{.x= 0,.y= 2},{.x= 1,.y= 2}};
+            const Offset off[5] = {{.x= 0,.y= 0},{.x=-1,.y= 0},{.x=-1,.y=-1},{.x= 0,.y= 2},{.x=-1,.y= 2}};
             kickIndex = rotateOff(board, nextPiece.minos, pos, off);
         }else if(piece->rotation == 3 && rotation ==  1){
             const Offset off[5] = {{.x= 0,.y= 0},{.x=-1,.y= 0},{.x=-1,.y=-1},{.x= 0,.y= 2},{.x=-1,.y= 2}};
