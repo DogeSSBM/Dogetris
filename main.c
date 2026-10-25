@@ -92,6 +92,9 @@ int main(void)
 
         if(keyPressed(SC_RSHIFT))
             state.editMode = !state.editMode;
+        
+        if(mouseBtnPressed(MOUSE_L) && state.editMode)
+            edit(state.board, state.piece.minos, state.piecePos, off, scale);
 
         if(keyPressed(SC_SPACE)){
             state.piecePos = sonicDrop(state.board, state.piece.minos, state.piecePos);

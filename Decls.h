@@ -12,6 +12,8 @@ Offset getOffset(const Length windowLen, const int scale);
 Coord bwCoord(const Coord pos, const Offset off, const int scale);
 // takes a board x y pos and returns its window position coord
 Coord bposwCoord(const int x, const int y, const Offset off, const int scale);
+// takes a window pos coord and returns its board coord
+Coord wbCoord(const Coord pos, const Offset off, const int scale);
 
 // Pieces.h -------------------------------------------------------------------
 // returns true if the mino at pos x y is filled
@@ -52,6 +54,8 @@ bool shouldPlacePiece(PieceType *board, const u16 minos, const Coord pos, const 
 Offset getMovement(const bool editMode, const uint frameTime, const uint lastMoveDown, const uint lastMoveLR, const uint fallTime);
 // attempts to moves piece. updates last move times. returns true on success
 bool movePiece(GameState* state, const Offset move, const uint frameTime);
+// edits minos on board
+void edit(PieceType *board, const u16 pieceMinos, const Coord piecePos, const Offset off, const int scale);
 
 // State.h --------------------------------------------------------------------
 // resets state to starting game state

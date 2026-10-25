@@ -157,4 +157,19 @@ bool movePiece(GameState* state, const Offset move, const uint frameTime)
     return false;
 }
 
+// edits minos on board
+void edit(PieceType *board, const u16 pieceMinos, const Coord piecePos, const Offset off, const int scale)
+{
+    Coord mBpos = wbCoord(mouse.pos, off, scale);
+    mBpos.x -= 1;
+    if(mBpos.x >= 0 && mBpos.x < 10 && mBpos.y >= 0 && mBpos.y < 20){
+        if(mBpos.x >= piecePos.x && mBpos.x < piecePos.x+4 && mBpos.y >= piecePos.y && mBpos.y < piecePos.y+4){
+            const Coord pieceMinoMousePos = coordSub(mBpos, piecePos);
+            if(minoCoord(pieceMinos, pieceMinoMousePos))
+                return;
+        }
+        const size_t bindex = mBpos.y*20 + mBpos.x;
+        board[bindex] = board[bindex] == PIECE_EMPTY ? rand()%PIECE_NUM : PIECE_EMPTY;
+    }
+}
 #endif
